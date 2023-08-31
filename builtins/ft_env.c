@@ -6,7 +6,7 @@
 /*   By: tmoumni <tmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/01 09:55:13 by tmoumni           #+#    #+#             */
-/*   Updated: 2023/08/31 20:09:12 by tmoumni          ###   ########.fr       */
+/*   Updated: 2023/08/31 20:40:28 by tmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,21 @@ void	print_env(int p)
 
 void	init_empty_env(char **env)
 {
-	env[0] = "PWD=/Users/tmoumni/Desktop/minishell";
+	char	*pwd;
+	char	*pwd1;
+
+	pwd = malloc(PATH_MAX);
+	if (!pwd)
+		return ;
+	getcwd(pwd, PATH_MAX);
+	pwd1 = ft_strjoin("PWD=", pwd);
+	env[0] = pwd1;
+	free(pwd);
+	free(pwd1);
 	env[1] = "SHLVL=1";
 	env[2] = "_=/usr/bin/env";
-	env[3] = NULL;
+	env[3] = "PATH=/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin";
+	env[4] = NULL;
 }
 
 void	ft_env_init(char **env)
