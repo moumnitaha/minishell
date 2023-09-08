@@ -6,7 +6,7 @@
 /*   By: tmoumni <tmoumni@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 16:42:04 by tmoumni           #+#    #+#             */
-/*   Updated: 2023/08/30 14:06:22 by tmoumni          ###   ########.fr       */
+/*   Updated: 2023/09/08 11:33:53 by tmoumni          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ char	*fix_cmd(t_cmd *cmd_ptr)
 	path = ft_split(ft_get_env("PATH"), ':');
 	if (!path)
 		return (*cmd_ptr->cmd);
-	while (path[i++])
+	while (path[i])
 	{
 		cmd = *cmd_ptr->cmd;
-		if (!check_cmd(&cmd) || !path[i + 1])
+		if (!check_cmd(&cmd))
 			break ;
 		prefixed = ft_strjoin("/", cmd);
 		cmd = ft_strjoin(path[i], prefixed);
@@ -63,7 +63,10 @@ char	*fix_cmd(t_cmd *cmd_ptr)
 		if (!access(cmd, F_OK) && !access(cmd, X_OK))
 			break ;
 		free(cmd);
+		i++;
 	}
+	if (!path[i] && access(cmd, X_OK))
+		return (*cmd_ptr->cmd);
 	free_tab(path);
 	return (cmd);
 }
